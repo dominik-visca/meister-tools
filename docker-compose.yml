@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  meister-tools:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src
+    networks:
+      - web
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.meister-tools.rule=Host(`meister-tools.dvisca.de`)
+      - traefik.http.routers.meister-tools.tls=true
+      - traefik.http.routers.meister-tools.tls.certresolver=lets-encrypt
+      - traefik.http.middlewares.meister-tools-https-redirect.redirectscheme.scheme=https
+      - traefik.port=3000
+
+networks:
+  web:
+    external: true
